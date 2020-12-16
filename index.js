@@ -2,7 +2,7 @@ const express = require("express");
 const MongoClient = require('mongodb').MongoClient;
 const cors = require("cors");
 const bodyParser = require("body-parser");
-
+const ObjectId = require("mongodb").ObjectId;
 
 const app = express();
 app.use(cors());
@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 })
 
 
-
+//Mongodb connect
 client.connect(err => {
     const wordsCollection = client.db("vocabularyWebApp").collection("vocabularyWords");
 
@@ -44,6 +44,18 @@ client.connect(err => {
             res.send(result.insertedCount > 0)
         })
         
+    })
+
+    //find single word by id
+    app.get("/wordById/:id", (req, res) => {
+
+        const id = req.params.id;
+        wordsCollection.findOne({_id: ObjectId(id)})
+        .toArray((error, documents) => {
+            
+            console.log(documents[0]);
+            res.send(documents[0]);
+        })
     })
 
 
