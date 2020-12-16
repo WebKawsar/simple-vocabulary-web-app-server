@@ -56,10 +56,9 @@ client.connect(err => {
     app.get("/wordById/:id", (req, res) => {
 
         const id = req.params.id;
-        wordsCollection.findOne({_id: ObjectId(id)})
+        wordsCollection.find({_id: ObjectId(id)})
         .toArray((error, documents) => {
             
-            console.log(documents[0]);
             res.send(documents[0]);
         })
     })
